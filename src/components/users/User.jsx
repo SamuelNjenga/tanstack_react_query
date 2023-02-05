@@ -2,21 +2,22 @@ import React, { useState } from "react";
 
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { CircleLoader } from "react-spinners";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
-import { getUsers } from "../../services/APIUtils";
+import { createUser, getUsers } from "../../services/APIUtils";
 
 import "./User.css";
 
 const User = () => {
   const [open, setOpen] = useState(false);
+  const [item, setItem] = useState({ firstName: "", lastName: "", email: "" });
+
   const { data, isError, error, isLoading } = useQuery({
     queryKey: ["users"],
     onSuccess: () => console.log("SUCCESS"),
@@ -26,12 +27,22 @@ const User = () => {
     // ],
   });
 
+  const mutation = useMutation(() => {
+    createUser(item);
+  });
+
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleChange = (event) => {
+    const target = event.target;
+    const value = target.value;
+    setItem({ ...item, [event.target.name]: value });
   };
 
   if (isLoading) {
@@ -50,11 +61,11 @@ const User = () => {
       {data?.data?.map((user) => {
         return <div key={user.id}>{user.firstName}</div>;
       })}
-      <br />
+      <hr />
       <Button variant="outlined" onClick={handleClickOpen}>
         Add a user
       </Button>
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={open} onClose={handleClose} onSubmit={mutation.mutate}>
         <DialogTitle>
           <span className="dialog__title">Add a user</span>
         </DialogTitle>
@@ -66,6 +77,9 @@ const User = () => {
           </DialogContentText>
           <TextField
             autoFocus
+            name="firstName"
+            value={item.firstName}
+            onChange={handleChange}
             margin="dense"
             id="firstname"
             label="First Name"
@@ -75,6 +89,9 @@ const User = () => {
           />
           <TextField
             autoFocus
+            name="lastName"
+            value={item.lastName}
+            onChange={handleChange}
             margin="dense"
             id="lastName"
             label="Last Name"
@@ -84,8 +101,11 @@ const User = () => {
           />
           <TextField
             autoFocus
+            value={item.email}
+            onChange={handleChange}
             margin="dense"
             id="email"
+            name="email"
             label="Email Address"
             type="email"
             fullWidth
@@ -94,7 +114,14 @@ const User = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Submit</Button>
+          <Button
+            type="submit"
+            onClick={() => {
+              mutation.mutate(item);
+            }}
+          >
+            Submit
+          </Button>
         </DialogActions>
       </Dialog>
     </div>
