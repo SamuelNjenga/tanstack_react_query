@@ -19,3 +19,13 @@ export const createUser = ({ firstName, lastName, email }) => {
     })
     .then((res) => res.data);
 };
+
+export const createTweet = ({ message, userId, noOfLikes }) => {
+  return axios
+    .post(`${API_BASE_URL}/tweets`, {
+      message: message,
+      userId: userId,
+      noOfLikes: noOfLikes,
+    })
+    .then((res) => res.data);
+};
