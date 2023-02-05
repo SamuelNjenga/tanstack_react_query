@@ -62,7 +62,7 @@ const User = () => {
         return <div key={user.id}>{user.firstName}</div>;
       })}
       <hr />
-      <Button variant="outlined" onClick={handleClickOpen}>
+      <Button variant="outlined" onClick={handleClickOpen} color="secondary">
         Add a user
       </Button>
       <Dialog open={open} onClose={handleClose} onSubmit={mutation.mutate}>
@@ -113,9 +113,13 @@ const User = () => {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
+          <Button color="secondary" onClick={handleClose}>
+            Cancel
+          </Button>
           <Button
             type="submit"
+            variant="outlined"
+            color="secondary"
             onClick={() => {
               mutation.mutate(item);
             }}
