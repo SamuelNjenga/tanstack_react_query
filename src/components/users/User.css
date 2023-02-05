@@ -1,3 +1,11 @@
 .heading--title-text {
   font-family: "Nunito", sans-serif;
 }
+
+.dialog__title {
+  font-family: "Spectral", serif;
+}
+
+.dialog__subtitle {
+  font-family: "Karla", sans-serif;
+}
