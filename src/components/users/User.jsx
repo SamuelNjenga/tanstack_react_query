@@ -5,6 +5,8 @@ import { useQuery } from "@tanstack/react-query";
 
 import { getUsers } from "../../services/APIUtils";
 
+import "./User.css";
+
 const User = () => {
   const { data, isError, error, isLoading } = useQuery({
     queryKey: ["users"],
@@ -26,7 +28,7 @@ const User = () => {
 
   return (
     <div>
-      <h4>Users List</h4>
+      <h4 className="heading--title-text">Users List</h4>
       {data?.data?.map((user) => {
         return <div key={user.id}>{user.firstName}</div>;
       })}
