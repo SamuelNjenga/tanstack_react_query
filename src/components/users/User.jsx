@@ -55,6 +55,8 @@ const User = () => {
 
   if (isError) return <pre>{JSON.stringify(error.message)}</pre>;
 
+  console.log('DATA',data
+  )
   return (
     <div>
       <h4 className="heading--title-text">Users List</h4>

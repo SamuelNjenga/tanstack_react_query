@@ -6,8 +6,8 @@ export const getUsers = () => {
   return axios.get(`${API_BASE_URL}/users`);
 };
 
-export const getTweets = () => {
-  return axios.get(`${API_BASE_URL}/tweets`);
+export const getTweets = (pageNo) => {
+  return axios.get(`${API_BASE_URL}/tweets?page=${pageNo}`);
 };
 
 export const createUser = ({ firstName, lastName, email }) => {

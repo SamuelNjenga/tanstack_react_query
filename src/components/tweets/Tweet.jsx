@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -7,6 +7,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import { Pagination } from "@mui/material";
 import { CircleLoader } from "react-spinners";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
@@ -15,13 +16,16 @@ import { createTweet, getTweets } from "../../services/APIUtils";
 import "../users/User.css";
 
 const Tweet = () => {
+  const [page, setPage] = useState(0);
   const [open, setOpen] = useState(false);
   const [item, setItem] = useState({ message: "", userId: "", noOfLikes: "" });
 
-  const { data, isError, error, isLoading } = useQuery({
+  const { data, isError, error, isLoading, refetch } = useQuery({
     queryKey: ["tweets"],
-    onSuccess: () => console.log("SUCCESS"),
-    queryFn: getTweets,
+    onSuccess: () => {
+      console.log("SUCCESS");
+    },
+    queryFn: () => getTweets(page),
   });
 
   const mutation = useMutation(() => {
@@ -52,12 +56,28 @@ const Tweet = () => {
 
   if (isError) return <pre>{JSON.stringify(error.message)}</pre>;
 
+  const handlePageChange = (event, value) => {
+    setPage(value - 1);
+  };
+
+  useEffect(() => {
+    refetch();
+  }, [page]);
+
   return (
     <div>
       <h4 className="heading--title-text">Tweets List</h4>
       {data?.data?.tweets?.map((tweet) => {
         return <div key={tweet.id}>{tweet.id}</div>;
       })}
+      <hr />
+      <Pagination
+        page={page + 1}
+        count={data?.data?.totalPages}
+        variant="outlined"
+        shape="rounded"
+        onChange={handlePageChange}
+      />
       <hr />
       <Button variant="outlined" onClick={handleClickOpen} color="secondary">
         Add a tweet
