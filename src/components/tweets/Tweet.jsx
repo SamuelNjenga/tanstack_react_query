@@ -20,8 +20,9 @@ const Tweet = () => {
   const [open, setOpen] = useState(false);
   const [item, setItem] = useState({ message: "", userId: "", noOfLikes: "" });
 
-  const { data, isError, error, isLoading, refetch } = useQuery({
-    queryKey: ["tweets"],
+  const { data, isError, error, isLoading } = useQuery({
+    queryKey: ["tweets", { page }],
+    keepPreviousData: true,
     onSuccess: () => {
       console.log("SUCCESS");
     },
