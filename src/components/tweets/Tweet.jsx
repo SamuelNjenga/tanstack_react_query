@@ -60,10 +60,6 @@ const Tweet = () => {
     setPage(value - 1);
   };
 
-  useEffect(() => {
-    refetch();
-  }, [page]);
-
   return (
     <div>
       <h4 className="heading--title-text">Tweets List</h4>
