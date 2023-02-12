@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 
+import { useQueryClient } from "@tanstack/react-query";
 import { Box } from "@mui/material";
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
@@ -15,14 +16,23 @@ import Tweet from "../components/tweets/Tweet";
 import InfiniteTweet from "../components/tweets/InfiniteTweet";
 import TweetInfinite from "../components/tweets/TweetInfinite";
 import User from "../components/users/User";
-import MultipleUser from "../components/users/MultipleUser";
+import { getUsers } from "../services/APIUtils";
 
+import MultipleUser from "../components/users/MultipleUser";
 
 const Home = () => {
   const [value, setValue] = useState("1");
+  const queryClient = useQueryClient();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  const onHoverUserLink = () => {
+    queryClient.prefetchQuery({
+      queryKey: ["users"],
+      queryFn: getUsers,
+    });
   };
 
   return (
@@ -37,15 +47,16 @@ const Home = () => {
               indicatorColor="secondary"
               centered
             >
-              <Tab label="Users" value="1" icon={<AccountCircleIcon />} />
+              <Tab
+                label="Users"
+                value="1"
+                icon={<AccountCircleIcon />}
+                onMouseEnter={onHoverUserLink}
+              />
               <Tab label="Tweets" value="2" icon={<ChatBubbleOutlineIcon />} />
               <Tab label="All Tweets " value="3" icon={<SelectAllIcon />} />
               <Tab label="My Tweets" value="4" icon={<PlaylistPlayIcon />} />
-              <Tab
-                label="Multiple Users"
-                value="5"
-                icon={<PeopleIcon />}
-              />
+              <Tab label="Multiple Users" value="5" icon={<PeopleIcon />} />
             </TabList>
           </Box>
           <TabPanel value="1">
