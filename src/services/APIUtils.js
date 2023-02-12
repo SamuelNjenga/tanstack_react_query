@@ -10,6 +10,10 @@ export const getTweets = (pageNo) => {
   return axios.get(`${API_BASE_URL}/tweets?page=${pageNo}`);
 };
 
+export const getAllTweets = () => {
+  return axios.get(`${API_BASE_URL}/tweets/all`);
+};
+
 export const createUser = ({ firstName, lastName, email }) => {
   return axios
     .post(`${API_BASE_URL}/users`, {

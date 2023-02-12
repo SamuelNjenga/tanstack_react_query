@@ -7,8 +7,13 @@ import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
+import PlaylistPlayIcon from "@mui/icons-material/PlaylistPlay";
+import SelectAllIcon from "@mui/icons-material/SelectAll";
 
 import Tweet from "../components/tweets/Tweet";
+import InfiniteTweet from "../components/tweets/InfiniteTweet";
+import TweetInfinite from "../components/tweets/TweetInfinite";
+
 import User from "../components/users/User";
 
 const Home = () => {
@@ -32,6 +37,8 @@ const Home = () => {
             >
               <Tab label="Users" value="1" icon={<AccountCircleIcon />} />
               <Tab label="Tweets" value="2" icon={<ChatBubbleOutlineIcon />} />
+              <Tab label="All Tweets " value="3" icon={<SelectAllIcon />} />
+              <Tab label="My Tweets" value="4" icon={<PlaylistPlayIcon />} />
             </TabList>
           </Box>
           <TabPanel value="1">
@@ -39,6 +46,12 @@ const Home = () => {
           </TabPanel>
           <TabPanel value="2">
             <Tweet />
+          </TabPanel>
+          <TabPanel value="3">
+            <InfiniteTweet />
+          </TabPanel>
+          <TabPanel value="4">
+            <TweetInfinite />
           </TabPanel>
         </TabContext>
       </Box>
