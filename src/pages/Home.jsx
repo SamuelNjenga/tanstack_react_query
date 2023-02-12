@@ -9,12 +9,14 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import PlaylistPlayIcon from "@mui/icons-material/PlaylistPlay";
 import SelectAllIcon from "@mui/icons-material/SelectAll";
+import PeopleIcon from "@mui/icons-material/People";
 
 import Tweet from "../components/tweets/Tweet";
 import InfiniteTweet from "../components/tweets/InfiniteTweet";
 import TweetInfinite from "../components/tweets/TweetInfinite";
-
 import User from "../components/users/User";
+import MultipleUser from "../components/users/MultipleUser";
+
 
 const Home = () => {
   const [value, setValue] = useState("1");
@@ -39,6 +41,11 @@ const Home = () => {
               <Tab label="Tweets" value="2" icon={<ChatBubbleOutlineIcon />} />
               <Tab label="All Tweets " value="3" icon={<SelectAllIcon />} />
               <Tab label="My Tweets" value="4" icon={<PlaylistPlayIcon />} />
+              <Tab
+                label="Multiple Users"
+                value="5"
+                icon={<PeopleIcon />}
+              />
             </TabList>
           </Box>
           <TabPanel value="1">
@@ -52,6 +59,9 @@ const Home = () => {
           </TabPanel>
           <TabPanel value="4">
             <TweetInfinite />
+          </TabPanel>
+          <TabPanel value="5">
+            <MultipleUser />
           </TabPanel>
         </TabContext>
       </Box>

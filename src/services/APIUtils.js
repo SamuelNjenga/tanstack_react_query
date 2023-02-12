@@ -6,6 +6,10 @@ export const getUsers = () => {
   return axios.get(`${API_BASE_URL}/users`);
 };
 
+export const getUser = (userId) => {
+  return axios.get(`${API_BASE_URL}/users/${userId}`);
+};
+
 export const getTweets = (pageNo) => {
   return axios.get(`${API_BASE_URL}/tweets?page=${pageNo}`);
 };
