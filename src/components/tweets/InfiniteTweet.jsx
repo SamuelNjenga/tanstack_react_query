@@ -8,15 +8,18 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { CircleLoader } from "react-spinners";
-import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation } from "@tanstack/react-query";
 
-import { createTweet, getAllTweets } from "../../services/APIUtils";
+import { createTweet, getInfiniteTweets } from "../../services/APIUtils";
 
 import "../users/User.css";
 
 const InfiniteTweet = () => {
   const [open, setOpen] = useState(false);
   const [item, setItem] = useState({ message: "", userId: "", noOfLikes: "" });
+  const [lastTweet, setLastTweet] = useState(0);
+  const [tweets, setTweets] = useState([]);
+  const [limit, setLimit] = useState(5);
 
   const {
     data,
@@ -27,9 +30,20 @@ const InfiniteTweet = () => {
     fetchNextPage,
   } = useInfiniteQuery({
     queryKey: ["all tweets", "infinite"],
-    // getNextPageParam: (prevData) => prevData.hasMore,
-    getNextPageParam: (prevData) => prevData.nextPage,
-    queryFn: ({ lastTweet = 0 }) => getAllTweets(lastTweet),
+    getNextPageParam: (prevData) => {
+      if (prevData.data.hasMore === true) {
+        return prevData.data.lastTweet;
+      } else {
+        return undefined;
+      }
+    },
+    queryFn: async () => {
+      const data = await getInfiniteTweets(limit, lastTweet);
+      const newTweets = data.data.result;
+      setTweets([...tweets, ...newTweets]);
+      setLastTweet(data.data.lastTweet);
+      return data;
+    },
   });
 
   const mutation = useMutation(() => {
@@ -60,12 +74,10 @@ const InfiniteTweet = () => {
 
   if (status === "error") return <pre>{JSON.stringify(error.message)}</pre>;
 
-  console.log("INFINITE DATA", data);
-  console.log("HAS NEXT", hasNextPage);
   return (
     <div>
       <h4 className="heading--title-text">Tweets List</h4>
-      {data?.pages[0].data?.result?.map((tweet) => {
+      {tweets.map((tweet) => {
         return <div key={tweet.id}>{tweet.id}</div>;
       })}
       <hr />

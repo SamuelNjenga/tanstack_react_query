@@ -14,8 +14,16 @@ export const getTweets = (pageNo) => {
   return axios.get(`${API_BASE_URL}/tweets?page=${pageNo}`);
 };
 
-export const getAllTweets = () => {
-  return axios.get(`${API_BASE_URL}/tweets/all`);
+export const getAllTweets = (limit, lastTweet) => {
+  return axios.get(
+    `${API_BASE_URL}/tweets/all?limit=${limit}&lastTweet=${lastTweet}`
+  );
+};
+
+export const getInfiniteTweets = (limit, lastTweet) => {
+  return axios.get(
+    `${API_BASE_URL}/tweets/infinite?limit=${limit}&lastTweet=${lastTweet}`
+  );
 };
 
 export const createUser = ({ firstName, lastName, email }) => {
